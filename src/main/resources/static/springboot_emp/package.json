@@ -1,0 +1,26 @@
+{
+  "name": "springboot_emp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap3": "^3.3.5",
+    "css-loader": "^3.2.0",
+    "jquery": "^3.4.1",
+    "layer": "^0.1.0",
+    "layui": "0.0.1",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.2.0",
+    "vue": "^2.6.10",
+    "vue-resource": "^1.5.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

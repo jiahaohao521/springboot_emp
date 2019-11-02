@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../node_modules/vue/dist/vue.min.js"></script>
+		<!--引入vue-resource：用于处理ajax请求-->
+		<script src="../node_modules/vue-resource/dist/vue-resource.min.js"></script>
+		<script src="../dist/bundle.js"></script>
+		<style>
+			#emp_save{
+				margin-top: 20px;
+				margin-left: 540px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="emp" class="col-md-10">
+		<div id="emp_insert" class="col-md-4">
+			<!--添加表单-->
+			<legend>增加员工
+			<table class="table table-bordered table-hover">
+				<tr>
+					<td>
+						<label for="inputEmail3" class="col-md-12">姓名:</label>
+					</td>
+					<td>
+						<input type="text" class="form-control" v-model="ename" placeholder="请输入姓名">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="inputEmail3" class="col-md-12">出生日期:</label>
+					</td>
+					<td>
+						<input type="date" class="form-control"  v-model="birthday" placeholder="请输入出生日期">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button class="btn btn-primary btn-lg btn-block" @click="save()">提交</button>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<hr />
+			<!--显示员工列表-->
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<td>#</td>
+						<td>姓名</td>
+						<td>出生日期</td>
+						<td>创建日期</td>
+						<td>修改日期</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(emp,i) in list" :key="emp.eid">
+						<td>{{i + 1}}</td>
+						<td>{{emp.ename}}</td>
+						<td>{{emp.bridhday}}</td>
+						<td>{{emp.createtime}}</td>
+						<td>{{emp.updatetime}}</td>
+						<td>
+							<button class="btn btn-danger" @click="del(emp.eid)">删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</legend>
+		</div>
+		<!--添加列表-->
+		
+		<script>
+			var app = new Vue({
+				el:"#emp",
+				data:{
+					eid:"",
+					ename:"",
+					birthday:null,
+					createtime:null,
+					updatetime:null,
+					list:""
+				},
+				created(){
+					this.findAll();
+				},
+				methods:{
+					//查询全部
+					findAll: function(){
+						var self = this;
+						this.$http.get('http://192.168.1.77:8080/springboot_emp/emp/findAll').then(function(data){
+							self.list = data.body;
+							console.log(data.body)
+						})
+					},
+					//添加数据
+					save(){
+						if(this.birthday == null){
+							alert("日期不能为空!")
+						}else{
+							this.$http.post('http://192.168.1.77:8080/springboot_emp/emp/insert',{ename:this.ename,birthday:this.birthday},{emulateJSON:true}).then(function(data){
+								//添加成功,清空name和birthday
+								alert("添加成功!")
+								this.ename = '';
+								this.birthday = '';
+								this.findAll();
+							})
+						}
+					},
+					//删除员工
+					del(id){
+						this.$http.post('http://192.168.1.77:8080/springboot_emp/emp/delete',{eid:id},{emulateJSON:true}).then(function(data){
+							alert("删除成功!");
+							this.findAll();
+						})
+					}
+					
+				}
+			})
+		</script>
+	</body>
+</html>
